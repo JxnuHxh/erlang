@@ -1,0 +1,68 @@
+假设有两个程序员hxh,zpw在操作同一个项目mall，他们各自从远程仓库中克隆了一个本地仓库。
+并且各自建立了一个本地分支：branchHxh， branchZpw
+
+hxh: git checkout branchHxh
+
+hxh: 编辑文件a.html. 在第一行输入"hxh"
+
+hxh: git add a.html
+
+hxh: git commit -m"edit a"
+
+hxh: git checkout master
+
+hxh: git merge branchHxh 合并分支的更新到master
+
+hxh: git push origin master 推送master分支
+
+查看远程仓库master分支的a.html, 内容是hxh
+此时，mall远程仓库中的master分支的a.html已经被hxh修改了。但是zpw并不知情
+
+zpw: git checkout branchZpw
+
+zpw: 编辑文件a.html. 在第一行输入"zpw"
+
+zpw: git add a. html
+
+zpw: git commit -m"edit a"
+
+zpw: git checkout master
+
+zpw：git pull origin master
+
+zpw意识到远程仓库的master分支可能已经被人修改了，为了安全起见，先获取一下最新代码
+
+zpw: git merge branckZpw
+
+报错：a.html中有冲突，自动merge失败，不能merge 打开a.html, 会发现有如下内容。
+
+gitMerge.png
+
+其中HEAD 到 =======之间的内容是master中最新更新的内容，
+======= 到 branchZpw之间的就是zpw更新的内容。
+
+zpw： 手动合并代码改成hxh zpw
+
+zpw: git commit -am"merge ok" 处理完冲突后，提交
+
+zpw: git push -u origin master 推送到远程仓库
+
+查看远程仓库的a.html, 内容是hxh zpw
+
+过了一会儿，zpw发现hxh的更新才是对的，需要把自己推送的代码回滚到hxh的最新版本
+
+zpw: git log 查看hxh最新推送代码的commit id。其实就是在决定要回滚到哪个版本
+
+zpw: git revert 报错：不能revert ...........
+
+提示：文件有冲突提示： revert时有冲突是很正常的，不用担心
+
+zpw: 打开 a.html. 解决冲突。把"mary"删掉，只留下"hxh"，因为"hxh"才是正确的代码
+
+zpw: git add a.html
+
+zpw: git commit -am"revert to hxh"
+
+zpw: git push origin master
+
+zpw: 查看远程仓库的a.html现在只有"hxh"了。同时，commits中又多了一条zpw的推送记录
