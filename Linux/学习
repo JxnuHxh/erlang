@@ -1,0 +1,13 @@
+Linux一些常用的命令整理
+
+文件搜索命令：
+{
+find -name
+find -iname //不区分大小写查找
+find -name 关键字
+find -name 关键字 //开头含有关键字的文件
+find -name 关键字？ //“？”表示一个字符
+
+find 【范围】 -size 【数据块】 //按大小查找文件 一个数据块=512字节
+1
+}
