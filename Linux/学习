@@ -314,4 +314,4 @@ iptables  -F  清除防火墙策略
 
 setenforce 0(临时关闭selinux)  #永久关闭selinux需要在/etc/selinux/config修改SELINUX=enforcing为SELINUX=disabled
 
-10.查找文件或目录    find  指定查找路径  -name  指定查找的文件名及目录名  例如find
+10.查找文件或目录    find  指定查找路径  -name  指定查找的文件名及目录名
