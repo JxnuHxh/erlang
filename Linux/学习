@@ -1,13 +1,317 @@
 Linux一些常用的命令整理
 
-文件搜索命令：
-{
-find -name
-find -iname //不区分大小写查找
-find -name 关键字
-find -name 关键字 //开头含有关键字的文件
-find -name 关键字？ //“？”表示一个字符
+1.磁盘分区
 
-find 【范围】 -size 【数据块】 //按大小查找文件 一个数据块=512字节
-1
-}
+2.目录结构
+
+3.linux命令的分类
+
+4.常见的linux命令
+
+　　1.命令编辑的几个辅助操作
+
+　　2.命令帮助
+
+　　3.查看文件内容cat,more,less,head,tail
+
+　　4.统计命令wc
+
+　　5.检索和过滤文件内容grep命令
+
+　　6.压缩和解压缩：gzip（gunzip）和bzip2（bunzip2）
+
+　　7.归档及解归档：tar
+
+　　8.vim编辑器
+
+　　9.防火墙状态查看以及关闭等
+
+       10.查找文件或目录    find  指定查找路径  -name  指定查找的文件名及目录名  例如find  /etc -name passwd
+
+        11.yum安装
+
+        12.创建用户
+
+5.linux init进程
+
+一、磁盘分区
+
+linux分区不同于windows，linux下硬盘设备名为（IDE硬盘为hdx（x为从a—d）因为IDE硬盘最多四个，SCSI，SATA，USB硬盘为sdx（x为a—z）），硬盘主分区最多为4个，用fdisk –l查看设备名。
+
+sd:串口，SCSI，SAS，USB存储
+
+hd:并口
+
+主分区:sdb1-sdb4 主分区存放操作系统  #硬盘主分区最多为4个,这里以sdb硬盘为例
+
+扩展分区:sdb5
+
+逻辑分区:从sdb6开始
+
+
+
+硬盘编号：a、b、c、....z
+分区编号：1、2、3、...
+
+例如：
+
+sdb3（第2块SCSI硬盘的第3个主分区）
+hda7（第1块IDE硬盘的第2个逻辑分区）
+
+启动分区的挂载点是/boot  建议200M(centos6.5)
+
+交换分区没有挂载点，文件系统类型是swap,虚拟内存至少物理内存的2倍
+
+根分区 存放os,挂载点/
+
+二、目录结构
+
+linux目录结构如下图:　
+
+　　
+
+2.根目录，一般根目录下只存放目录，不要存放文件，/etc、/bin、/dev、/lib、/sbin应该和根目录放置在一个分区中。
+
+/bin 普通用户执行的命令存放的地方
+
+/sbin 管理员执行的命令存放的地方
+
+/usr应用程序存放的目录
+
+　　/usr/bin 存放应用程序　　
+
+　　/usr/lib 存放不能直接运行的，却是许多程序运行所必需的一些函数库文件
+
+　　/usr/local 存放软件升级包
+
+/lib 系统使用的函数库的目录
+
+/root 管理员的家目录(宿主目录)
+
+/home 普通用户的家目录
+
+/var 放置系统执行过程中经常变化的文件，如随时更改的日志文件
+
+/etc 存放各种配置文件
+
+/srv 服务启动之后要访问的目录
+
+/mnt 光盘默认挂载点
+
+/dev 存放linux系统下的设备文件，访问该目录下某个文件，相当于访问某个设备
+
+/opt 给主机额外安装软件所存放的目录
+
+/tmp 一般用户或正在执行的程序临时存放文件的目录
+
+三、linux命令的分类
+
+linux命令概念:用于实现一类功能的指令或程序，命令的执行依赖于解释器程序
+
+内部命令:属于shell解释器的 一部分，在硬盘上找不到，系统启动自动加载到内存中
+
+外部命令:独立于shell解释器之外的程序文件，一般在硬盘中可以找到
+
+四、常见的linux命令
+
+1.命令编辑的几个辅助操作(快捷键不区分大小写)
+
+Tab键，自动补全
+
+反斜杠"\":强制换行
+
+快捷键ctrl+U:清空至行首
+
+快捷键ctrl+K:清空至行尾
+
+快捷键ctrl+L:清屏
+
+快捷键ctrl+C:取消本次命令编辑
+
+2.命令帮助　　
+
+help 内部命令（例如：help cd）
+外部命令 --help （例如：ls --help）
+
+获取外部命令在线手册：man 外部命令（例如：man ls）
+
+3.查看文件内容cat,more,less,head,tail
+
+cat /root/lshelp.txt(无分屏浏览功能，只适合于文件内容在一屏以内的文件)
+cat /etc/resolv.conf /etc/hosts(查看多个文件内容)
+more /root/lshelp.txt(有分屏浏览功能）
+less /root/lshelp.txt(有分屏浏览功能）
+也可以：cat /root/lshelp.txt | more
+或者：cat /root/lshelp.txt | less
+
+head /root/lshelp.txt（默认显示lshelp.txt文件头部的前10行内容）
+head -5 /root/lshelp.txt（显示lshelp.txt文件头部的前5行内容）
+
+tail /root/lshelp.txt（默认显示lshelp.txt文件尾部的后10行内容）
+tail -5 /root/lshelp.txt（显示lshelp.txt文件尾部的后5行内容）
+
+tail -f /root/lshelp.txt（动态显示lshelp.txt文件尾部新增加的内容） #测试另开一个终端窗口，用echo  "sfdfdds" > lshelp.txt
+
+4.统计命令wc　　
+
+-l：统计行数 例如：wc -l /root/lshelp.txt（统计lshelp.txt文件中有多少行）
+-w：统计单词数 例如：wc -w /root/lshelp.txt（统计lshelp.txt文件中有多少单词）
+-c：统计字节数 例如：wc -l /root/lshelp.txt（统计lshelp.txt文件的字节数）
+
+还可以：ps -aux | wc -l （统计有多少个进程，一行一个进程）
+
+5.检索和过滤文件内容grep命令　
+
+作用：在文件中查找并显示指定包含字符串的行
+
+选项：-i（忽略大、小写） -v（反转查找）
+
+查找条件：
+
+查找"要查找的字符串"： "要查找的字符串" 例如：grep "NAME" /root/lshelp.txt
+查找以某字符串为开头： "^某字符串" 例如：grep "^NAME" /root/lshelp.txt
+查找以某字符串为结尾： "某字符串$" 例如：grep "NAME$" /root/lshelp.txt
+查找空行： "^$" 例如：grep "^$" /root/lshelp.txt
+其它例子：
+grep -i "NAME" /root/lshelp.txt（查找包含NAME字符串的行，忽略大小写）
+grep -v "^$" /root/lshelp.txt（不显示空行）
+grep -v "^$" /root/lshelp.txt | grep -v "^#" （不显示空行和带#号的行）
+
+6.压缩和解压缩：gzip（gunzip）和bzip2（bunzip2）
+
+1）压缩
+cp /etc/yum.conf /root（复制一个文件到root目录，对该文件进行压缩操作）
+cd /root
+gzip yum.conf
+ls yum.conf.gz（查看是否有压缩文件）
+
+cp /etc/yum.conf /root/yum1.conf
+cd /root
+gzip yum1.conf
+ls yum1.conf.bz2（查看是否有压缩文件）
+
+2）解压缩
+gzip -d yum.conf.gz
+gunzip yum.conf.gz
+bzip2 -d yum1.conf.bz2
+gunbzip2 yum1.conf.bz2
+
+7.归档及解归档：tar
+
+常见选项：
+-c:建立归档文件
+-x:解归档
+-v:显示过程
+-f:指定归档文件
+-p:保留原有权限
+-t:查看归档包中的文件
+-z:启用gzip压缩
+-j:启用bzip2压缩
+-C:释放归档时，指定目标路径
+例子：
+cd /root
+tar -cvf etc.tar /etc/*
+（对/etc目录进行归档，存放在当前路径，归档文件名为：etc.tar）
+
+mkdir /backup（在根下创建backup目录
+tar -cvf /backup/etc.tar /etc/*
+（对/etc目录进行归档，存放在/backup目录，归档文件名为：etc.tar）
+mkdir test1 test2（在当前路径下创建test1、test2目录）
+tar -xvf etc.tar -C test1
+（对当前路径下的归档文件etc.tar，进行解归档至当前路径下的test1目录中）
+
+tar -zcvf etc.tar.gz /etc/*（创建归档并压缩，压缩方式为：gzip） #所有的操作都有f选项 必须放在所有选项的最后
+tar -jcvf etc.tar.bz2 /etc/*（创建归档并压缩，压缩方式为：bzip2）
+
+tar -zxvf etc.tar.gz -C /test/   解压归档
+
+tar -tf etc.tar.gz（查看gzip格式的归档文件中的文件列表）
+tar -tf etc.tar.bz2（查看bzip2格式的归档文件中的文件列表）
+
+8.vim编辑器
+
+1）三种模式：命令模式、输入模式、末行模式
+命令模式----按a、i、o等键----->输入模式
+输入模式----按esc键----->返回命令模式
+命令模式----输入冒号:----->末行模式
+末行模式----按esc键----->返回命令模式
+
+输入模式和末行模式之间不能直接转换，只能通过命令模式间接转换
+cd /root
+cp /etc/sudo.conf /root
+vim /root/sudo.conf（使用vim编辑器打开某文件，直接进入命令模式）
+
+2）光标移动
+行内快速跳转：（命令模式）
+跳转至行首：Home键或“^”（shift+6）、数字“0”
+跳转至行尾：End键或“$”键
+
+行内快速跳转：（命令模式）
+跳转至文档的首行：1G或者gg
+跳转至文档的尾行：G
+跳转到文件中的第#行： #G
+
+行号：（末行模式）
+:set nu(显示行号)
+:set nonu (取消显示行号)
+3）复制、粘贴、删除：（命令模式）
+复制：
+光标所在行（当前行）：yy
+从光标所在行开始的#行：#yy
+
+粘贴：
+p：粘贴到目标位置的光标前面
+P：粘贴到目标位置的光标后面
+
+删除：
+单个字符：x、del、delete、
+行：
+当前光标所在行：dd
+从光标所在行开始的#行：#dd
+删除当前光标之前到行首的所有字符：d^
+删除当前光标之前到行首的所有字符：d$
+
+4)内容查找：（命令模式）
+从上到下进行查找：/要查找的字符串
+从下到上进行查找：?要查找的字符串
+
+向下定位：n
+向上定位：N
+
+5)撤销及保存：（命令模式）
+撤销一次：u
+撤销多次：多执行几次u命令
+撤销全部操作：U（大写）
+
+保存：ZZ（大写）
+
+6）保存及退出：（末行模式）
+:w (保存)
+:w /root/test.txt （另存）
+:q (退出，未作修改)
+:q! (退出，修改内容后，不保存退出)
+:wq （保存退出）
+
+7）打开或编辑文件：（末行模式）
+:e /root/yum.conf （编辑文件）
+:r /root/test.txt (打开文件）
+8) 文件内容替换：（末行模式）
+:s /old/new (在光标所在行查找第一个old字符串，并替换为new字符串)
+:s /old/new/g (在光标所在行查找所有的old字符串，并都替换为new字符串)
+:#,# s /old/new/g (在指定的行之间查找所有的old字符串，并都替换为new字符串)
+:% s /old/new/g (在全文中查找所有的old字符串，并都替换为new字符串)
+:% s /old/new/gc (在全文中查找所有的old字符串，并都替换为new字符串，但要确认)
+
+9.防火墙状态以及关闭
+
+chkconfig --list iptables（查看iptables防火墙状态）
+
+chkconfig iptables off（修改iptables服务开机后自动关闭）
+
+service iptables stop（停止iptables防火墙服务）
+
+iptables  -F  清除防火墙策略
+
+setenforce 0(临时关闭selinux)  #永久关闭selinux需要在/etc/selinux/config修改SELINUX=enforcing为SELINUX=disabled
+
+10.查找文件或目录    find  指定查找路径  -name  指定查找的文件名及目录名  例如find
