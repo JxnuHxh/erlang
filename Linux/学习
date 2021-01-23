@@ -315,3 +315,15 @@ iptables  -F  清除防火墙策略
 setenforce 0(临时关闭selinux)  #永久关闭selinux需要在/etc/selinux/config修改SELINUX=enforcing为SELINUX=disabled
 
 10.查找文件或目录    find  指定查找路径  -name  指定查找的文件名及目录名
+
+11.yum
+
+yum erase  软件名    yum remove 软件名    卸载软件
+
+yum install  软件名   安装
+
+yum list  软件名     列出某个软件的信息
+
+yum  info  软件名   查询某个软件的信息
+
+yum search 软件名  搜索某个软件
